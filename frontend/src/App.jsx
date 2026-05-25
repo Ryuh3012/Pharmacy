@@ -1,6 +1,8 @@
-import { Button } from '@heroui/react'
 import React from 'react'
+import axios from 'axios';
 import Navegation from './Navegation'
+
+axios.defaults.withCredentials = true;
 
 const App = () => {
   return (
@@ -8,4 +10,4 @@ const App = () => {
   )
 }
 
-export default App
+export default App;

@@ -1,154 +1,136 @@
+import React from 'react';
+import { useNavigate } from 'react-router';
+import Layout from '../../Layout';
 
+import HeroCarousel from '../../components/Navbar/carousel/HeroCarousel';
+import PromoCarousel from '../../components/Navbar/carousel/CarouselPromocion';
+import ProductCarousel from '../../components/Navbar/carousel/Carousel';
 
+import Img from "../../../assets/farm.jpg";
+import Img2 from "../../../assets/farmacia.jpg";
+import Img3 from "../../../assets/hola.jpg";
+import Img4 from "../../../assets/objetos.jpg";
 
-import { Card } from '@heroui/react'
-import Layout from '../../Layout'
+const SLIDES_HERO = [
+    { id: 0, src: Img, alt: "Lleva tu Pepsi al máximo" },
+    { id: 1, src: Img2, alt: "Descuentos de Farmacia" },
+    { id: 2, src: Img3, alt: "Promoción Especial" },
+    { id: 3, src: Img4, alt: "Nuevos Objetos de Catálogo" }
+];
+
+const DATA_PROMOS = [
+    { id: 1, discountTag: "30%", labelText: "Hasta 30% Dcto. en Cuidado Bucal", image: "https://images.unsplash.com/photo-1607613009820-a29f7bb81c04?q=80&w=400" },
+    { id: 2, discountTag: "20%", labelText: "20% Dcto. en Helados", image: "https://images.unsplash.com/photo-1563805042-7684c019e1cb?q=80&w=400" },
+    /* 🎯 Corregido: Se cambió 'text' por 'labelText' para mantener consistencia */
+    { id: 3, discountTag: "20%", labelText: "20% Dcto. en Higiene del Hogar", image: "https://images.unsplash.com/photo-1583947215259-38e31be8751f?q=80&w=400" },
+    { id: 4, discountTag: "15%", labelText: "Hasta 15% Dcto. en Afeitado", image: "https://images.unsplash.com/photo-1626014903708-490f2302660d?q=80&w=400" }
+];
+
+const DB_PRODUCTS = [
+    { id: "p1", labelText: "Refresco Coca-cola Sabor Original X 2 Lt", price: 778.75, image: "https://images.unsplash.com/photo-1622483767028-3f66f32aef97?q=80&w=400", unitDetail: "Mililitros a Bs. 0.39" },
+    { id: "p2", discountTag: "20%", labelText: "Galleta De Chocolate Samba Savoy Fresa X 32 Gr", price: 462.90, oldPrice: 578.62, image: "https://images.unsplash.com/photo-1590080875515-8a3a8dc5735e?q=80&w=400", unitDetail: "Gramos a Bs. 14.47" },
+    { id: "p3", labelText: "Snack Doritos Mega Queso X 150 Gr", price: 1785.40, image: "https://images.unsplash.com/photo-1599490659223-e1b98175ef6d?q=80&w=400", unitDetail: "Gramos a Bs. 11.90" },
+    { id: "p4", labelText: "Galletas Le Biscuit Mini Piruetas X 150 Gr", price: 865.68, image: "https://images.unsplash.com/photo-1558961312-503453e08a3b?q=80&w=400", unitDetail: "Gramos a Bs. 5.77" }
+];
+
+const HEALTH_CATEGORIES = [
+    { id: "c1", name: "Medicamentos", count: "1,240 productos", icon: "💊", ring: "border-blue-100 bg-blue-50/50 text-blue-600" },
+    { id: "c2", name: "Dermocosmética", count: "480 productos", icon: "🧴", ring: "border-purple-100 bg-purple-50/50 text-purple-600" },
+    { id: "c3", name: "Nutrición y Fitness", count: "310 productos", icon: "🍏", ring: "border-emerald-100 bg-emerald-50/50 text-emerald-600" },
+    { id: "c4", name: "Mamá y Bebé", count: "250 productos", icon: "🍼", ring: "border-pink-100 bg-pink-50/50 text-pink-600" },
+    { id: "c5", name: "Dispositivos Médicos", count: "190 productos", icon: "🩺", ring: "border-cyan-100 bg-cyan-50/50 text-cyan-600" },
+    { id: "c6", name: "Cuidado del Adulto", count: "150 productos", icon: "🧑‍🦳", ring: "border-amber-100 bg-amber-50/50 text-amber-600" },
+];
 
 const PageCatalog = () => {
+    const navigate = useNavigate();
 
-
+    const handleCategoryClick = (categoryName) => {
+        /* 🎯 Corregido: Se cambió '/seach' por '/search' */
+        navigate(`/search?q=${encodeURIComponent(categoryName)}`);
+    };
 
     return (
         <Layout>
-            <main className="flex flex-col w-full gap-y-2 px-2 ">
-                <Card className="flex flex-col justify-center items-center gap-y-2 p-2">
-                    <p className="text-3xl font-bold">PREINGRESO UNIVERSITARIO hasta el 31/01/2025</p>
-                    <p className="text-3xl font-bold hover:text-red-600">
-                        {/* <Link to='https://webiujocatia.wordpress.com/registro-preingreso/'> */}
-                        Detalles del Proceso ¡Presiona AQUÍ!
-                        {/* </Link> */}
-                    </p>
-                    <p className="text-2xl font-bold">CUPOS LIMITADOS</p>
-                    <div className="flex flex-col items-center">
-                        {/* <Image src={img} width={750} height={550} alt="HeroUI hero Image with delay" /> */}
-                        {/* <Link> */}
-                        <p className="text-2xl hover:text-red-600">Detalles del Proceso ¡Presiona AQUÍ!</p>
-                        {/* </Link> */}
-                    </div>
-                </Card>
-                <Card className="flex flex-col justify-center items-center gap-y-2 p-2">
-                    <p className="text-3xl font-bold">PREINGRESO UNIVERSITARIO hasta el 31/01/2025</p>
-                    <p className="text-3xl font-bold hover:text-red-600">
-                        {/* <Link to='https://webiujocatia.wordpress.com/registro-preingreso/'> */}
-                        Detalles del Proceso ¡Presiona AQUÍ!
-                        {/* </Link> */}
-                    </p>
-                    <p className="text-2xl font-bold">CUPOS LIMITADOS</p>
-                    <div className="flex flex-col items-center">
-                        {/* <Image src={img} width={750} height={550} alt="HeroUI hero Image with delay" /> */}
-                        {/* <Link> */}
-                        <p className="text-2xl hover:text-red-600">Detalles del Proceso ¡Presiona AQUÍ!</p>
-                        {/* </Link> */}
-                    </div>
-                </Card>
-                <Card className="flex flex-col justify-center items-center gap-y-2 p-2">
-                    <p className="text-3xl font-bold">PREINGRESO UNIVERSITARIO hasta el 31/01/2025</p>
-                    <p className="text-3xl font-bold hover:text-red-600">
-                        {/* <Link to='https://webiujocatia.wordpress.com/registro-preingreso/'> */}
-                        Detalles del Proceso ¡Presiona AQUÍ!
-                        {/* </Link> */}
-                    </p>
-                    <p className="text-2xl font-bold">CUPOS LIMITADOS</p>
-                    <div className="flex flex-col items-center">
-                        {/* <Image src={img} width={750} height={550} alt="HeroUI hero Image with delay" /> */}
-                        {/* <Link> */}
-                        <p className="text-2xl hover:text-red-600">Detalles del Proceso ¡Presiona AQUÍ!</p>
-                        {/* </Link> */}
-                    </div>
-                </Card>
-                <Card className="flex flex-col gap-y-2 p-2 justify-center items-center">
-                    <p className="text-2xl font-bold  hover:text-red-600">CELEBREMOS JUNTOS NUESTRO 26°
-                        <br />ANIVERSARIO…»con el corazón en Catia»</p>
-                    <div className="flex flex-col items-center">
-                        {/* <Image src={icon} width={750} height={550} alt="HeroUI hero Image with delay" /> */}
-                        {/* <Link to='https://webiujocatia.wordpress.com/2024/10/25/celebremos-juntos-nuestro-26-aniversario-con-el-corazon-en-catia/'> */}
-                        <p className="text-xl hover:text-red-600">Detalles del Proceso ¡Presiona AQUÍ!</p>
-                        {/* </Link> */}
-                    </div>
-                </Card>
-                <Card className="flex flex-col gap-y-2 p-2">
-                    {/* <Link to='https://webiujocatia.wordpress.com/2024/10/19/bienvenidos-al-nuevo-periodo-ii-2024-octubre-2024-febrero-2025/'>
-                        <p className="text-2xl font-bold">BIENVENIDOS AL PERÍODO II-2024 / OCTUBRE 2024 – FEBRERO 2025</p>
-                    </Link> */}
-                    <div className="flex flex-col items-center">
-                        {/* <Image src={img2} width={750} height={550} alt="HeroUI hero Image with delay" /> */}
+            <section className='h-full w-full flex flex-col gap-6 p-4 max-w-[1400px] mx-auto pb-16'>
 
+                <HeroCarousel slides={SLIDES_HERO} />
+
+                <div className="bg-white dark:bg-gray-900 rounded-[5px] p-6 border border-gray-100 dark:border-gray-800/80 shadow-md">
+                    <div className="mb-6 flex justify-between items-center">
+                        <h2 className="text-lg font-bold text-gray-800 dark:text-gray-100 tracking-tight relative">
+                            Categorías de Salud y Bienestar
+                            <span className="absolute bottom-[-6px] left-0 w-12 h-[3px] bg-emerald-500 rounded-full"></span>
+                        </h2>
                     </div>
-                </Card>
 
-            </main>
+                    <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-4">
+                        {HEALTH_CATEGORIES.map((cat) => (
+                            <div
+                                key={cat.id}
+                                onClick={() => handleCategoryClick(cat.name)}
+                                className="flex flex-col items-center text-center p-5 rounded-xl border border-gray-100 dark:border-gray-800/60 bg-white dark:bg-gray-950/40 cursor-pointer shadow-[0_2px_8px_rgba(0,0,0,0.02)] hover:shadow-md hover:border-blue-500/40 hover:dark:border-blue-500/30 transition-all duration-300 ease-out group"
+                            >
+                                <div className={`w-16 h-16 rounded-full border ${cat.ring} flex items-center justify-center text-2xl mb-3.5 transition-transform duration-500 ease-out group-hover:scale-105 shadow-inner`}>
+                                    <span className="drop-shadow-sm">{cat.icon}</span>
+                                </div>
 
+                                <h3 className="text-sm font-semibold text-gray-800 dark:text-gray-200 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors line-clamp-1 tracking-tight px-1">
+                                    {cat.name}
+                                </h3>
+
+                                <p className="text-[11px] font-medium text-gray-400 dark:text-gray-500 mt-1">
+                                    {cat.count}
+                                </p>
+                            </div>
+                        ))}
+                    </div>
+                </div>
+
+                <PromoCarousel title="Promociones del Día" promos={DATA_PROMOS} />
+
+                {/* Ambos ProductCarousel se alimentan de la DB simulada e implementan correctamente el redireccionamiento por ID */}
+                <ProductCarousel
+                    title="Alimentos y Bebidas"
+                    products={DB_PRODUCTS}
+                    seeAllUrl="/search?q=Alimentos"
+                />
+
+                <ProductCarousel
+                    title="Cuidado Personal e Higiene"
+                    products={DB_PRODUCTS}
+                    seeAllUrl="/search?q=Higiene"
+                />
+
+                <div className="w-full bg-linear-to-r from-slate-900 via-blue-950 to-slate-900 text-white rounded-[5px] p-8 relative overflow-hidden border border-gray-800 flex flex-col md:flex-row items-center justify-between gap-6 shadow-sm">
+                    <div className="absolute top-0 right-0 w-64 h-64 bg-[#2B7DE2]/10 rounded-full blur-3xl pointer-events-none"></div>
+                    <div className="absolute -bottom-10 -left-10 w-44 h-44 bg-emerald-500/10 rounded-full blur-2xl pointer-events-none"></div>
+
+                    <div className="max-w-xl relative z-10 text-center md:text-left">
+                        <div className="inline-block bg-emerald-500 text-slate-950 text-[10px] font-black px-2 py-0.5 rounded-[3px] uppercase tracking-wider mb-2">
+                            Club de Bienestar Inteligente
+                        </div>
+                        <h3 className="text-xl md:text-2xl font-black tracking-tight">
+                            ¿Tomas medicamentos de forma recurrentes?
+                        </h3>
+                        <p className="text-sm text-gray-300 mt-2 font-medium leading-relaxed">
+                            Únete de forma gratuita y programa tus compras mensuales automáticamente con un <span className="text-emerald-400 font-bold">15% de descuento adicional</span> y envío prioritario.
+                        </p>
+                    </div>
+
+                    <div className="flex flex-col sm:flex-row gap-3 w-full md:w-auto relative z-10 shrink-0">
+                        <button className="px-5 py-2.5 bg-[#4FA1F4] hover:bg-[#2B7DE2] text-white text-xs font-bold rounded-[4px] shadow-xs hover:shadow-md transition-all duration-200 cursor-pointer active:scale-95 text-center">
+                            Inscribir mis Tratamientos
+                        </button>
+                        <button className="px-5 py-2.5 bg-transparent border border-gray-600 hover:border-gray-400 text-gray-200 text-xs font-bold rounded-[4px] transition-all duration-200 cursor-pointer text-center">
+                            Conocer más
+                        </button>
+                    </div>
+                </div>
+
+            </section>
         </Layout>
-    )
-}
+    );
+};
 
-export default PageCatalog
-
-// <button
-//     onClick={() => setIsMegaMenuOpen(!isMegaMenuOpen)}
-//     type="button"
-//     className="flex items-center justify-between w-full py-1 font-medium hover:text-blue-600"
-// >
-//     Company
-//     <svg className={`w-4 h-4 ms-1.5 transition-transform duration-200 ${isMegaMenuOpen ? "rotate-180 text-blue-600" : ""}`} aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-//         <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="m19 9-7 7-7-7" />
-//     </svg>
-// </button>
-// {isMegaMenuOpen && (
-//     <div className="absolute left-0 mt-3 z-50 grid w-full grid-cols-1 gap-4 p-4 bg-white border border-gray-200 rounded-lg shadow-xl md:w-[600px] sm:grid-cols-2 md:grid-cols-3">
-//         <div>
-//             <ul className="space-y-3 font-normal text-gray-600">
-//                 <li>
-//                     <a href="#" className="inline-flex items-center hover:text-blue-600 w-full">
-//                         <svg className="w-4 h-4 me-1.5 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2"><path strokeLinecap="round" strokeLinejoin="round" d="M10 11h2v5m-2 0h4m-2.592-8.5h.01M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" /></svg>
-//                         About Us
-//                     </a>
-//                 </li>
-//                 <li>
-//                     <a href="#" className="inline-flex items-center hover:text-blue-600 w-full">
-//                         <svg className="w-4 h-4 me-1.5 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2"><path strokeLinecap="round" strokeLinejoin="round" d="M12 6.03v13m0-13c-2.819-.831-4.715-1.076-8.029-1.023A.99.99 0 0 0 3 6v11c0 .563.466 1.014 1.03 1.007 3.122-.043 5.018.212 7.97 1.023m0-13c2.819-.831 4.715-1.076 8.029-1.023A.99.99 0 0 1 21 6v11c0 .563-.466 1.014-1.03 1.007-3.122-.043-5.018.212-7.97 1.023" /></svg>
-//                         Library
-//                     </a>
-//                 </li>
-//                 <li>
-//                     <a href="#" className="inline-flex items-center hover:text-blue-600 w-full">
-//                         <svg className="w-4 h-4 me-1.5 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2"><path strokeLinecap="round" strokeLinejoin="round" d="M12 11H4m15.5 5a.5.5 0 0 0 .5-.5V8a1 1 0 0 0-1-1h-3.75a1 1 0 0 1-.829-.44l-1.436-2.12a1 1 0 0 0-.828-.44H8a1 1 0 0 0-1 1M4 9v10a1 1 0 0 0 1 1h11a1 1 0 0 0 1-1v-7a1 1 0 0 0-1-1h-3.75a1 1 0 0 1-.829-.44L9.985 8.44A1 1 0 0 0 9.157 8H5a1 1 0 0 0-1 1Z" /></svg>
-//                         Resources
-//                     </a>
-//                 </li>
-//             </ul>
-//         </div>
-//         <div>
-//             <ul className="space-y-3 font-normal text-gray-600">
-//                 <li>
-//                     <a href="#" className="inline-flex items-center hover:text-blue-600 w-full">
-//                         <svg className="w-4 h-4 me-1.5 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2"><path strokeLinecap="round" strokeLinejoin="round" d="M10 3v4a1 1 0 0 1-1 1H5m4 8h6m-6-4h6m4-8v16a1 1 0 0 1-1 1H6a1 1 0 0 1-1-1V7.914a1 1 0 0 1 .293-.707l3.914-3.914A1 1 0 0 1 9.914 3H18a1 1 0 0 1 1 1Z" /></svg>
-//                         Blog
-//                     </a>
-//                 </li>
-//                 <li>
-//                     <a href="#" className="inline-flex items-center hover:text-blue-600 w-full">
-//                         <svg className="w-4 h-4 me-1.5 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2"><path strokeLinecap="round" strokeLinejoin="round" d="M11 16v-5.5A3.5 3.5 0 0 0 7.5 7m3.5 9H4v-5.5A3.5 3.5 0 0 1 7.5 7m3.5 9v4M7.5 7H14m0 0V4h2.5M14 7v3m-3.5 6H20v-6a3 3 0 0 0-3-3m-2 9v4m-8-6.5h1" /></svg>
-//                         Newsletter
-//                     </a>
-//                 </li>
-//             </ul>
-//         </div>
-//         <div>
-//             <ul className="space-y-3 font-normal text-gray-600">
-//                 <li>
-//                     <a href="#" className="inline-flex items-center hover:text-blue-600 w-full">
-//                         <svg className="w-4 h-4 me-1.5 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2"><path strokeLinecap="round" strokeLinejoin="round" d="M18.427 14.768 17.2 13.542a1.733 1.733 0 0 0-2.45 0l-.613.613a1.732 1.732 0 0 1-2.45 0l-1.838-1.84a1.735 1.735 0 0 1 0-2.452l.612-.613a1.735 1.735 0 0 0 0-2.452L9.237 5.572a1.6 1.6 0 0 0-2.45 0c-3.223 3.2-1.702 6.896 1.519 10.117 3.22 3.221 6.914 4.745 10.12 1.535a1.601 1.601 0 0 0 0-2.456Z" /></svg>
-//                         Contact Us
-//                     </a>
-//                 </li>
-//                 <li>
-//                     <a href="#" className="inline-flex items-center hover:text-blue-600 w-full">
-//                         <svg className="w-4 h-4 me-1.5 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2"><path strokeLinecap="round" strokeLinejoin="round" d="M9.529 9.988a2.502 2.502 0 1 1 5 .191A2.441 2.441 0 0 1 12 12.582V14m-.01 3.008H12M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" /></svg>
-//                         Support Center
-//                     </a>
-//                 </li>
-//             </ul>
-//         </div>
-//     </div>
-// )}
+export default PageCatalog;

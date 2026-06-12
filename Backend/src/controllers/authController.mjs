@@ -1,49 +1,60 @@
-import jwt from 'jsonwebtoken';
+// src/controllers/authController.mjs
+import bcrypt from "bcrypt"; 
+// Importamos tu modelo (Asegúrate de haber elegido la Opción 1 de renombrarlo a authModel.mjs)
 
-import { tokenJWT } from '../config/config.mjs';
+// Importamos el servicio para gestionar la cookie de sesión
 
-import { findOneByAuth } from "../models/auth.mjs";
+import { findOneByAuthModel } from "../models/authModel.mjs";
+import { handleSessionCookie } from "../services/tokenService.mjs";
 
 export const singIn = async (req, res) => {
-    const { userName, password } = req.body;
-
     try {
+        const { usuario, password } = req.body;
 
-        const usuario = await findOneByAuth(userName);
-
-        if (!usuario) {
-            return res.status(400).json({ message: "Usuario o contraseña incorrecta" });
+        // 1. Validar que el frontend envíe ambos campos obligatorios
+        if (!usuario || !password) {
+            return res.status(400).json({ message: "Usuario y contraseña son requeridos" });
         }
 
-        if (usuario.password !== password) {
-            return res.status(400).json({ message: "Usuario o contraseña incorrecta" });
+        // 2. Buscar si el usuario existe en la base de datos usando el modelo de Prisma
+        const usuarioEncontrado = await findOneByAuthModel(usuario);
+
+        if (!usuarioEncontrado) {
+            return res.status(401).json({ message: "Credenciales incorrectas" });
         }
 
-        const payload = {
-            id: usuario._id,
-            rol: usuario.rol
-        };
+        // 3. Comparar la contraseña en texto plano con el hash encriptado en la BD
+        const passwordCorrecto = await bcrypt.compare(password, usuarioEncontrado.password);
 
-        const token = jwt.sign(payload, 'TU_FIRMA_SECRETA_DEL_SERVIDOR', { expiresIn: '1d' });
+        if (!passwordCorrecto) {
+            return res.status(401).json({ message: "Credenciales incorrectas" });
+        }
 
-        res.cookie('mi_cookie_session', token, {
-            httpOnly: true,
-            secure: false, // Mantenlo en false en localhost (desarrollo)
-            sameSite: 'strict',
-            maxAge: 24 * 60 * 60 * 1000 // 1 día
+        // 4. 🍪 Generar el JWT y fijar la Cookie httpOnly en la respuesta (res)
+        // Guardamos el idUsuario, el nombre de usuario y el ID numérico del rol (rolId)
+        handleSessionCookie(res, {
+            idUsuario: usuarioEncontrado.idUsuario,
+            usuario: usuarioEncontrado.usuario,
+            rolId: usuarioEncontrado.rolId 
         });
 
-        return res.json({
-            message: "Login exitoso",
+        // 5. Responder con éxito al frontend mandando los datos del usuario para su estado global
+        return res.status(200).json({
+            message: "¡Inicio de sesión exitoso! 🚀",
             user: {
-                nameUser: usuario.nameUser,
-                rol: usuario.rol,
-                nombre: usuario.peopleid ? usuario.peopleid.name : null // Mapea el nombre populado
+                id: usuarioEncontrado.idUsuario,
+                usuario: usuarioEncontrado.usuario,
+                nombre: usuarioEncontrado.persona.nombrePersona,
+                apellido: usuarioEncontrado.persona.apellidoPersona,
+                rol: usuarioEncontrado.rol.roles // Envía el string ("Admin", "Cajero") para la interfaz
             }
         });
 
     } catch (error) {
-        console.error("Error en el controlador de inicio de sesión:", error);
-        return res.status(500).json({ message: "Error interno del servidor" });
+        console.error("Error en el singIn Controller:", error);
+        return res.status(500).json({ 
+            message: "Error interno del servidor", 
+            error: error.message 
+        });
     }
 };

@@ -16,11 +16,16 @@
     "@heroui/styles": "^3.0.3",
     "@tailwindcss/vite": "^4.2.4",
     "axios": "^1.16.1",
+    "chart.js": "^4.5.1",
     "formik": "^2.4.9",
+    "framer-motion": "^12.40.0",
     "install": "^0.13.0",
+    "lucide-react": "^1.17.0",
     "react": "^19.2.5",
+    "react-chartjs-2": "^5.3.1",
     "react-dom": "^19.2.5",
     "react-router": "^7.14.2",
+    "recharts": "2.12.7",
     "tailwindcss": "^4.2.4"
   },
   "devDependencies": {

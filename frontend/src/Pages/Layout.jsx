@@ -1,17 +1,17 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { NavLink, useNavigate } from 'react-router'; 
+import { NavLink, useNavigate } from 'react-router';
 
 const Layout = ({ children }) => {
     const navigate = useNavigate();
     const [isMegaMenuOpen, setIsMegaMenuOpen] = useState(false);
     const megaMenuRef = useRef(null);
-    const [searchQuery, setSearchQuery] = useState(""); 
+    const [searchQuery, setSearchQuery] = useState("");
 
     const handleSearchSubmit = (e) => {
         e.preventDefault();
-        if (!searchQuery.trim()) return; 
-        
-        {/* CORREGIDO: Cambiado de '/seach' a '/search' para que coincida con tus rutas */}
+        if (!searchQuery.trim()) return;
+
+        {/* CORREGIDO: Cambiado de '/seach' a '/search' para que coincida con tus rutas */ }
         navigate(`/search?q=${encodeURIComponent(searchQuery.trim())}`);
     };
 
@@ -43,7 +43,7 @@ const Layout = ({ children }) => {
                                 <img src="https://flowbite.com/docs/images/logo.svg" className="h-5 w-5 brightness-0 invert" alt="Logo" />
                             </div>
                             <span className="self-center text-xl font-black tracking-tight text-slate-900 font-sans">
-                                FARMA
+                                PHARMACY
                                 {/* <span className="text-blue-600 font-extrabold">FARMA</span> */}
                             </span>
                         </a>
@@ -51,7 +51,7 @@ const Layout = ({ children }) => {
 
                     <form onSubmit={handleSearchSubmit} className="flex-1 max-w-xl">
                         <div className="relative flex items-center h-11 w-full bg-slate-100/70 border border-transparent rounded-2xl px-2.5 gap-2 transition-all duration-300 focus-within:bg-white focus-within:border-blue-500/30 focus-within:shadow-[0_8px_30px_rgb(0,0,0,0.04)] focus-within:ring-4 focus-within:ring-blue-50 group">
-                            
+
                             <div className="pl-2 pointer-events-none text-slate-400 group-focus-within:text-blue-500 transition-colors">
                                 <svg className="w-5 h-5" fill="none" stroke="currentColor" strokeWidth="2.5" viewBox="0 0 24 24">
                                     <path strokeLinecap="round" strokeLinejoin="round" d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.602 10.602z" />
@@ -106,17 +106,17 @@ const Layout = ({ children }) => {
                     <div className="flex items-center h-11">
                         <ul className="flex items-center space-x-8 font-bold text-xs tracking-wider uppercase">
                             <li>
-                                <NavLink 
-                                    to="/" 
+                                <NavLink
+                                    to="/"
                                     className={({ isActive }) => `py-3 block border-b-2 transition-all duration-150 ${isActive ? "border-blue-500 text-blue-400" : "border-transparent text-slate-300 hover:text-white"}`}
                                 >
                                     Inicio
                                 </NavLink>
                             </li>
                             <li className="relative" ref={megaMenuRef}>
-                                <button 
-                                    onClick={toggleMegaMenu} 
-                                    type="button" 
+                                <button
+                                    onClick={toggleMegaMenu}
+                                    type="button"
                                     className={`flex items-center justify-between py-3 border-b-2 font-bold uppercase tracking-wider transition-all focus:outline-none cursor-pointer ${isMegaMenuOpen ? "border-blue-500 text-blue-400" : "border-transparent text-slate-300 hover:text-white"}`}
                                 >
                                     <span>Compañía</span>
@@ -129,9 +129,9 @@ const Layout = ({ children }) => {
                                     <div className="absolute left-0 mt-1 z-50 w-64 p-2 bg-white border border-slate-100 rounded-xl shadow-xl">
                                         <ul>
                                             <li>
-                                                <NavLink 
-                                                    to="/home" 
-                                                    onClick={() => setIsMegaMenuOpen(false)} 
+                                                <NavLink
+                                                    to="/home"
+                                                    onClick={() => setIsMegaMenuOpen(false)}
                                                     className="block px-4 py-2.5 text-sm normal-case font-semibold text-slate-700 hover:text-blue-600 hover:bg-slate-50 rounded-lg transition-colors"
                                                 >
                                                     Sobre Nosotros

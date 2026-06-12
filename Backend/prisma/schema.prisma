@@ -1,13 +1,188 @@
 // This is your Prisma schema file,
 // learn more about it in the docs: https://pris.ly/d/prisma-schema
 
-// Get a free hosted Postgres database in seconds: `npx create-db`
-
 generator client {
-  provider = "prisma-client"
-  output   = "../src/generated/prisma"
+  provider = "prisma-client-js" // 👈 SIEMPRE debe ser este valor exacto
 }
 
 datasource db {
   provider = "postgresql"
+}
+
+// --- Tus Modelos (Tablas) van aquí abajo ---
+// ==========================================
+// BLOQUE 1: ACCESOS, PERSONAS Y ROLES
+// ==========================================
+
+model Persona {
+  idPersona       Int       @id @default(autoincrement())
+  nombrePersona   String
+  apellidoPersona String
+  telefono        String?
+  direccion       String?
+  usuarios        Usuario[]
+}
+
+model Rol {
+  idRol    Int       @id @default(autoincrement())
+  roles    String // "Usuario", "Admin", "Cajero", "Moderador"
+  usuarios Usuario[]
+}
+
+model Usuario {
+  idUsuario          Int    @id @default(autoincrement())
+  usuario            String @unique
+  password           String
+  personaId          Int
+  rolId              Int
+  sucursalRegistroId Int
+
+  persona          Persona  @relation(fields: [personaId], references: [idPersona])
+  rol              Rol      @relation(fields: [rolId], references: [idRol])
+  sucursalRegistro Sucursal @relation("RegistroUsuario", fields: [sucursalRegistroId], references: [idSucursal])
+
+  empleadoPerfil DatosEmpleado?
+  carritos       Carrito[]
+  ventas         Venta[]
+}
+
+model DatosEmpleado {
+  idEmpleado         Int      @id @default(autoincrement())
+  usuarioId          Int      @unique
+  sucursalAsignadaId Int
+  fechaIngreso       DateTime @default(now())
+  cargoEspecifico    String
+  sueldo             Decimal  @db.Decimal(10, 2)
+
+  usuario          Usuario  @relation(fields: [usuarioId], references: [idUsuario])
+  sucursalAsignada Sucursal @relation(fields: [sucursalAsignadaId], references: [idSucursal])
+  ventasProcesadas Venta[]
+}
+
+// ==========================================
+// BLOQUE 2: SUCURSALES E INVENTARIO
+// ==========================================
+
+model Sucursal {
+  idSucursal     Int     @id @default(autoincrement())
+  nombreSucursal String
+  direccion      String
+  telefono       String?
+
+  usuariosRegistrados Usuario[]            @relation("RegistroUsuario")
+  empleadosAsignados  DatosEmpleado[]
+  inventarios         InventarioSucursal[]
+  ventasRealizadas    Venta[]
+}
+
+model InventarioSucursal {
+  idInventory      Int     @id @default(autoincrement())
+  productoId       Int
+  sucursalId       Int
+  stock            Int     @default(0)
+  pasilloUbicacion String?
+
+  producto Producto @relation(fields: [productoId], references: [idProducto])
+  sucursal Sucursal @relation(fields: [sucursalId], references: [idSucursal])
+
+  @@unique([productoId, sucursalId])
+}
+
+// ==========================================
+// BLOQUE 3: MANUFACTURA Y CATEGORÍAS
+// ==========================================
+
+model Categoria {
+  idCategoria      Int    @id @default(autoincrement())
+  nombreCategoria  String
+  categoriaPadreId Int?
+
+  categoriaPadre Categoria?  @relation("JerarquiaCategorias", fields: [categoriaPadreId], references: [idCategoria])
+  subcategorias  Categoria[] @relation("JerarquiaCategorias")
+  productos      Producto[]
+}
+
+model Empresa {
+  idEmpresa     Int        @id @default(autoincrement())
+  nombreEmpresa String
+  rifEmpresa    String     @unique
+  tipoEmpresa   String
+  productos     Producto[]
+}
+
+model Producto {
+  idProducto      Int     @id @default(autoincrement())
+  nombreComercial String
+  principioActivo String?
+  empresaId       Int
+  categoriaId     Int
+  precio          Decimal @db.Decimal(10, 2)
+  imagenUrl       String?
+  detalleUnidad   String?
+
+  empresa       Empresa              @relation(fields: [empresaId], references: [idEmpresa])
+  categoria     Categoria            @relation(fields: [categoriaId], references: [idCategoria])
+  inventarios   InventarioSucursal[]
+  detallesVenta DetalleVenta[]
+}
+
+// ==========================================
+// BLOQUE 4: INTELIGENCIA ARTIFICIAL Y MARKETING
+// ==========================================
+
+model SolucionesIA {
+  idSolucion            Int      @id @default(autoincrement())
+  sintomaNombre         String
+  sintomaIcono          String?
+  palabrasClave         String[]
+  descripcionClinica    String
+  principioActivoTarget String
+}
+
+model Promocion {
+  idPromocion      Int      @id @default(autoincrement())
+  tagDescuento     String
+  textoDescriptivo String
+  imagenBannerUrl  String?
+  fechaInicio      DateTime
+  fechaFin         DateTime
+  tipoAplicacion   String
+  referenciaId     Int
+}
+
+// ==========================================
+// BLOQUE 5: TRANSACCIONES Y CARRITO
+// ==========================================
+
+model Carrito {
+  idCarrito Int  @id @default(autoincrement())
+  usuarioId Int
+  productos Json
+
+  usuario Usuario @relation(fields: [usuarioId], references: [idUsuario])
+}
+
+model Venta {
+  idVenta    Int      @id @default(autoincrement())
+  usuarioId  Int
+  empleadoId Int
+  sucursalId Int
+  fechaHora  DateTime @default(now())
+  totalVenta Decimal  @db.Decimal(10, 2)
+
+  usuario  Usuario        @relation(fields: [usuarioId], references: [idUsuario])
+  empleado DatosEmpleado  @relation(fields: [empleadoId], references: [idEmpleado])
+  sucursal Sucursal       @relation(fields: [sucursalId], references: [idSucursal])
+  detalles DetalleVenta[]
+}
+
+model DetalleVenta {
+  idDetalle      Int     @id @default(autoincrement())
+  ventaId        Int
+  productoId     Int
+  cantidad       Int
+  precioUnitario Decimal @db.Decimal(10, 2)
+
+  venta    Venta    @relation(fields: [ventaId], references: [idVenta])
+  producto Producto @relation(fields: [productoId], references: [idProducto])
 }

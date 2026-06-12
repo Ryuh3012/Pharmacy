@@ -1,16 +1,15 @@
-import mongoose from 'mongoose'
-import { mongoURI } from '../config/config.mjs';
+import pkgPg from 'pg';
+import { PrismaPg } from '@prisma/adapter-pg';
+import pkgClient from '@prisma/client';
 
-// Tu URI de Atlas ya con la contraseña integrada y apuntando a la base de datos 'products'
-const MONGO_URI =  mongoURI;
+const { Pool } = pkgPg;
+const { PrismaClient } = pkgClient;
 
-export const connectdb = async () => {
-    try {
-        await mongoose.connect(MONGO_URI)
-        return console.log('Base de datos online');
-    }
-    catch (error) {
-        console.log(error);
-        throw new Error('Error a la hora de iniciar la base de datos');
-    }
-}
+// Creamos la conexión nativa con la URL de tu .env
+const pool = new Pool({ connectionString: process.env.DATABASE_URL });
+const adapter = new PrismaPg(pool);
+
+// Instanciamos Prisma pasando el adaptador directo exigido por la v7
+const prisma = new PrismaClient({ adapter });
+
+export default prisma;

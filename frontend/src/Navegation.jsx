@@ -6,6 +6,7 @@ import LoginAuth from './Pages/auth/Login/LoginAuth';
 import PageCatalog from './Pages/clients/catalog/PageCatalog';
 import PageSearch from './Pages/clients/search/PageSearch'; 
 import PageProduct from './Pages/clients/product/PageProduct'; 
+import Dashboard from './Pages/admin/Dashboard/Dashboard';
 
 const Navegation = () => {
     return (
@@ -21,7 +22,7 @@ const Navegation = () => {
                 <Route path='/login' element={<LoginAuth />} />
 
                 {/* Vistas de Personal */}
-                <Route path='/admin' element={<div>Panel de Control del Administrador (Estadísticas e Inventario)</div>} />
+                <Route path='/admin' element={<Dashboard/>} />
                 <Route path='/caja' element={<div>Sistema de Caja / POS (Facturación rápida)</div>} />
 
                 <Route path="*" element={<Navigate to={'/'} replace={true} />} />

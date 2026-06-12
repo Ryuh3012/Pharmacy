@@ -22,8 +22,6 @@ const LoginAuth = () => {
 
             try {
                 const { data } = await axios.post('http://localhost:3000/auth', values);
-                console.log(data)
-
                 // 2. Validación corregida para objetos JSON
                 if (data && data.user) {
                     setMessage('El usuario se ha logueado correctamente');

@@ -1,5 +1,5 @@
 // src/controllers/authController.mjs
-import bcrypt from "bcrypt"; 
+import bcrypt from "bcrypt";
 // Importamos tu modelo (Asegúrate de haber elegido la Opción 1 de renombrarlo a authModel.mjs)
 
 // Importamos el servicio para gestionar la cookie de sesión
@@ -9,33 +9,28 @@ import { handleSessionCookie } from "../services/tokenService.mjs";
 
 export const singIn = async (req, res) => {
     try {
-        const { usuario, password } = req.body;
-
+        const { userName, password } = req?.body;
         // 1. Validar que el frontend envíe ambos campos obligatorios
-        if (!usuario || !password) {
+        if (!userName || !password) {
             return res.status(400).json({ message: "Usuario y contraseña son requeridos" });
         }
 
         // 2. Buscar si el usuario existe en la base de datos usando el modelo de Prisma
-        const usuarioEncontrado = await findOneByAuthModel(usuario);
-
+        const usuarioEncontrado = await findOneByAuthModel(userName);
         if (!usuarioEncontrado) {
             return res.status(401).json({ message: "Credenciales incorrectas" });
         }
-
-        // 3. Comparar la contraseña en texto plano con el hash encriptado en la BD
         const passwordCorrecto = await bcrypt.compare(password, usuarioEncontrado.password);
-
+        console.log(passwordCorrecto)
         if (!passwordCorrecto) {
             return res.status(401).json({ message: "Credenciales incorrectas" });
         }
-
         // 4. 🍪 Generar el JWT y fijar la Cookie httpOnly en la respuesta (res)
         // Guardamos el idUsuario, el nombre de usuario y el ID numérico del rol (rolId)
         handleSessionCookie(res, {
             idUsuario: usuarioEncontrado.idUsuario,
             usuario: usuarioEncontrado.usuario,
-            rolId: usuarioEncontrado.rolId 
+            rolId: usuarioEncontrado.rolId
         });
 
         // 5. Responder con éxito al frontend mandando los datos del usuario para su estado global
@@ -52,9 +47,9 @@ export const singIn = async (req, res) => {
 
     } catch (error) {
         console.error("Error en el singIn Controller:", error);
-        return res.status(500).json({ 
-            message: "Error interno del servidor", 
-            error: error.message 
+        return res.status(500).json({
+            message: "Error interno del servidor",
+            error: error.message
         });
     }
 };

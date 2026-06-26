@@ -13,7 +13,7 @@ const router = Router();
  * 🔐 Ruta pública: Inicio de sesión
  * POST http://localhost:3000/auth/login
  */
-router.post("/login", singIn);
+router.post("/auth", singIn);
 
 /**
  * 🔄 Ruta protegida: Verificar estado de la sesión actual
@@ -22,7 +22,7 @@ router.post("/login", singIn);
  * 1. Pasa por 'verifyTokenMiddleware' para leer la cookie y validar el JWT.
  * 2. Si todo está bien, responde al frontend confirmando que la sesión sigue viva.
  */
-router.get("/validate", verifyTokenMiddleware, (req, res) => {
+router.get("/auth/validate", verifyTokenMiddleware, (req, res) => {
     return res.status(200).json({
         active: true,
         message: "Sesión activa y válida ✅",
@@ -43,5 +43,7 @@ router.get("/admin-dashboard", verifyTokenMiddleware, verifyAdmin, (req, res) =>
         message: "¡Bienvenido al panel de control de Administrador General! 👑"
     });
 });
+
+
 
 export default router;

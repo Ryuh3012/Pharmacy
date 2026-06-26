@@ -21,7 +21,7 @@ const LoginAuth = () => {
             setErrorInternal(null);
 
             try {
-                const { data } = await axios.post('http://localhost:3000/auth', values);
+                const { data } = await axios.post('http://localhost:3000/auth', values, { withCredentials: true });
                 // 2. Validación corregida para objetos JSON
                 if (data && data.user) {
                     setMessage('El usuario se ha logueado correctamente');
@@ -29,12 +29,12 @@ const LoginAuth = () => {
                     setTimeout(() => {
                         setMessage(null);
                         setIsLoading(false);
-                        
+
                         // 3. Redirección inteligente basada en el rol que armamos
                         if (data.user.rol === 'Administrador') {
                             navigation('/admin');
-                        } else if (data.user.rol === 'vendedor') {
-                            navigation('/caja');
+                        } else if (data.user.rol === 'Cajero') {
+                            navigation('/venta');
                         } else {
                             navigation('/');
                         }
@@ -62,7 +62,7 @@ const LoginAuth = () => {
                             {errorInternal}
                         </div>
                     )}
-                    
+
                     {message && (
                         <div className="bg-teal-100 border border-teal-500 text-teal-900 px-3 py-2 rounded relative text-center">
                             {message}

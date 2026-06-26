@@ -20,6 +20,9 @@ importers:
       '@heroui/styles':
         specifier: ^3.0.3
         version: 3.0.3(tailwind-merge@3.4.0)(tailwindcss@4.2.4)
+      '@heroui/use-disclosure':
+        specifier: ^2.2.19
+        version: 2.2.19(react-dom@19.2.5(react@19.2.5))(react@19.2.5)
       '@tailwindcss/vite':
         specifier: ^4.2.4
         version: 4.2.4(vite@8.0.9(jiti@2.6.1))
@@ -38,6 +41,9 @@ importers:
       install:
         specifier: ^0.13.0
         version: 0.13.0
+      js-cookie:
+        specifier: ^3.0.8
+        version: 3.0.8
       lucide-react:
         specifier: ^1.17.0
         version: 1.17.0(react@19.2.5)
@@ -309,6 +315,21 @@ packages:
     peerDependencies:
       tailwindcss: '>=4.0.0'
 
+  '@heroui/use-callback-ref@2.1.8':
+    resolution: {integrity: sha512-D1JDo9YyFAprYpLID97xxQvf86NvyWLay30BeVVZT9kWmar6O9MbCRc7ACi7Ngko60beonj6+amTWkTm7QuY/Q==}
+    peerDependencies:
+      react: '>=18 || >=19.0.0-rc.0'
+
+  '@heroui/use-disclosure@2.2.19':
+    resolution: {integrity: sha512-N3CBikg1cxik2xp1UQkPUBbKPGrvtdsRyAlOnGygliyr5wKpZHLZi0R/g8OxTZVk3zUSCl7HZJT13ddM5TqEvA==}
+    peerDependencies:
+      react: '>=18 || >=19.0.0-rc.0'
+
+  '@heroui/use-safe-layout-effect@2.1.8':
+    resolution: {integrity: sha512-wbnZxVWCYqk10XRMu0veSOiVsEnLcmGUmJiapqgaz0fF8XcpSScmqjTSoWjHIEWaHjQZ6xr+oscD761D6QJN+Q==}
+    peerDependencies:
+      react: '>=18 || >=19.0.0-rc.0'
+
   '@humanfs/core@0.19.2':
     resolution: {integrity: sha512-UhXNm+CFMWcbChXywFwkmhqjs3PRCmcSa/hfBgLIb7oQ5HNb1wS0icWsGtSAUNgefHeI+eBrA8I1fxmbHsGdvA==}
     engines: {node: '>=18.18.0'}
@@ -468,6 +489,12 @@ packages:
       react: ^16.8.0 || ^17.0.0-rc.1 || ^18.0.0 || ^19.0.0-rc.1
       react-dom: ^16.8.0 || ^17.0.0-rc.1 || ^18.0.0 || ^19.0.0-rc.1
 
+  '@react-aria/utils@3.33.1':
+    resolution: {integrity: sha512-kIx1Sj6bbAT0pdqCegHuPanR9zrLn5zMRiM7LN12rgRf55S19ptd9g3ncahArifYTRkfEU9VIn+q0HjfMqS9/w==}
+    peerDependencies:
+      react: ^16.8.0 || ^17.0.0-rc.1 || ^18.0.0 || ^19.0.0-rc.1
+      react-dom: ^16.8.0 || ^17.0.0-rc.1 || ^18.0.0 || ^19.0.0-rc.1
+
   '@react-aria/utils@3.34.0':
     resolution: {integrity: sha512-ZM1ZXIqpwGTJjjL6o3JhlZkEaBpQdxuOCqLEvwEwooaj5GsYI3E9UfOl5vy3UW6bYiEEWl9pNBntrb9CR9kItQ==}
     peerDependencies:
@@ -491,6 +518,17 @@ packages:
     peerDependencies:
       react: ^16.8.0 || ^17.0.0-rc.1 || ^18.0.0 || ^19.0.0-rc.1
       react-dom: ^16.8.0 || ^17.0.0-rc.1 || ^18.0.0 || ^19.0.0-rc.1
+
+  '@react-stately/flags@3.2.1':
+    resolution: {integrity: sha512-WPw9z4SPYqQMuExCnBNrQyyxCWSi9CDYnVqca19bqxaHZRT/uL5nL+IGCPHHa70Y5rx39E5hYKl8Hf0QJ6XKyA==}
+    peerDependencies:
+      react: ^16.8.0 || ^17.0.0-rc.1 || ^18.0.0 || ^19.0.0-rc.1
+      react-dom: ^16.8.0 || ^17.0.0-rc.1 || ^18.0.0 || ^19.0.0-rc.1
+
+  '@react-stately/utils@3.11.0':
+    resolution: {integrity: sha512-8LZpYowJ9eZmmYLpudbo/eclIRnbhWIJZ994ncmlKlouNzKohtM8qTC6B1w1pwUbiwGdUoyzLuQbeaIor5Dvcw==}
+    peerDependencies:
+      react: ^16.8.0 || ^17.0.0-rc.1 || ^18.0.0 || ^19.0.0-rc.1
 
   '@react-stately/utils@3.12.0':
     resolution: {integrity: sha512-7q+iHz9cENvro1dVKgdTxNh1i1mtWuLUI6UHp10TAgpxM9DyRDvmuN35zLXYCmMDgx3WLY2xkwqoez8xd+CdxQ==}
@@ -1436,6 +1474,9 @@ packages:
     resolution: {integrity: sha512-ekilCSN1jwRvIbgeg/57YFh8qQDNbwDb9xT/qu2DAHbFFZUicIl4ygVaAvzveMhMVr3LnpSKTNnwt8PoOfmKhQ==}
     hasBin: true
 
+  js-cookie@3.0.8:
+    resolution: {integrity: sha512-yeJd4aNAdYZQjaon2bpD/Gb0B/omw7HQOsynXXcOiWVCacbBcPlgn8S/d1X6blFSaHao7ozqtW7NZW19xpCtIw==}
+
   js-tokens@4.0.0:
     resolution: {integrity: sha512-RdJUflcE3cUzKiMqQgsCu06FPu9UdIJO0beYbPhHN4k6apgJtifcoCtT9bcxOpYBtpD2kCM6Sbzg4CausW/PKQ==}
 
@@ -2268,6 +2309,24 @@ snapshots:
     transitivePeerDependencies:
       - tailwind-merge
 
+  '@heroui/use-callback-ref@2.1.8(react@19.2.5)':
+    dependencies:
+      '@heroui/use-safe-layout-effect': 2.1.8(react@19.2.5)
+      react: 19.2.5
+
+  '@heroui/use-disclosure@2.2.19(react-dom@19.2.5(react@19.2.5))(react@19.2.5)':
+    dependencies:
+      '@heroui/use-callback-ref': 2.1.8(react@19.2.5)
+      '@react-aria/utils': 3.33.1(react-dom@19.2.5(react@19.2.5))(react@19.2.5)
+      '@react-stately/utils': 3.11.0(react@19.2.5)
+      react: 19.2.5
+    transitivePeerDependencies:
+      - react-dom
+
+  '@heroui/use-safe-layout-effect@2.1.8(react@19.2.5)':
+    dependencies:
+      react: 19.2.5
+
   '@humanfs/core@0.19.2':
     dependencies:
       '@humanfs/types': 0.15.0
@@ -2415,6 +2474,17 @@ snapshots:
       react-aria: 3.48.0(react-dom@19.2.5(react@19.2.5))(react@19.2.5)
       react-dom: 19.2.5(react@19.2.5)
 
+  '@react-aria/utils@3.33.1(react-dom@19.2.5(react@19.2.5))(react@19.2.5)':
+    dependencies:
+      '@react-aria/ssr': 3.10.0(react-dom@19.2.5(react@19.2.5))(react@19.2.5)
+      '@react-stately/flags': 3.2.1(react-dom@19.2.5(react@19.2.5))(react@19.2.5)
+      '@react-stately/utils': 3.12.0(react-dom@19.2.5(react@19.2.5))(react@19.2.5)
+      '@react-types/shared': 3.34.0(react@19.2.5)
+      '@swc/helpers': 0.5.21
+      clsx: 2.1.1
+      react: 19.2.5
+      react-dom: 19.2.5(react@19.2.5)
+
   '@react-aria/utils@3.34.0(react-dom@19.2.5(react@19.2.5))(react@19.2.5)':
     dependencies:
       '@swc/helpers': 0.5.21
@@ -2444,6 +2514,18 @@ snapshots:
       react: 19.2.5
       react-dom: 19.2.5(react@19.2.5)
       react-stately: 3.46.0(react@19.2.5)
+
+  '@react-stately/flags@3.2.1(react-dom@19.2.5(react@19.2.5))(react@19.2.5)':
+    dependencies:
+      '@swc/helpers': 0.5.21
+      react: 19.2.5
+      react-dom: 19.2.5(react@19.2.5)
+      react-stately: 3.46.0(react@19.2.5)
+
+  '@react-stately/utils@3.11.0(react@19.2.5)':
+    dependencies:
+      '@swc/helpers': 0.5.21
+      react: 19.2.5
 
   '@react-stately/utils@3.12.0(react-dom@19.2.5(react@19.2.5))(react@19.2.5)':
     dependencies:
@@ -3337,6 +3419,8 @@ snapshots:
   isexe@2.0.0: {}
 
   jiti@2.6.1: {}
+
+  js-cookie@3.0.8: {}
 
   js-tokens@4.0.0: {}
 

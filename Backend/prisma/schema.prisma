@@ -8,24 +8,25 @@ generator client {
 datasource db {
   provider = "postgresql"
 }
-
-// --- Tus Modelos (Tablas) van aquí abajo ---
 // ==========================================
-// BLOQUE 1: ACCESOS, PERSONAS Y ROLES
+// BLOQUE 1: USUARIOS Y EMPLEADOS
 // ==========================================
 
 model Persona {
   idPersona       Int       @id @default(autoincrement())
+  cedula          String    @unique // <--- Cédula centralizada para búsquedas rápidas
   nombrePersona   String
   apellidoPersona String
   telefono        String?
   direccion       String?
+  
   usuarios        Usuario[]
+  clientes        Cliente[] // Relación hacia el perfil comercial del cliente
 }
 
 model Rol {
-  idRol    Int       @id @default(autoincrement())
-  roles    String // "Usuario", "Admin", "Cajero", "Moderador"
+  idRol    Int      @id @default(autoincrement())
+  roles    String   // "Usuario", "Admin", "Cajero", "Moderador"
   usuarios Usuario[]
 }
 
@@ -43,7 +44,7 @@ model Usuario {
 
   empleadoPerfil DatosEmpleado?
   carritos       Carrito[]
-  ventas         Venta[]
+  clientePerfil  Cliente?      
 }
 
 model DatosEmpleado {
@@ -56,7 +57,7 @@ model DatosEmpleado {
 
   usuario          Usuario  @relation(fields: [usuarioId], references: [idUsuario])
   sucursalAsignada Sucursal @relation(fields: [sucursalAsignadaId], references: [idSucursal])
-  ventasProcesadas Venta[]
+  ventasProcesadas Venta[]  
 }
 
 // ==========================================
@@ -69,7 +70,7 @@ model Sucursal {
   direccion      String
   telefono       String?
 
-  usuariosRegistrados Usuario[]            @relation("RegistroUsuario")
+  usuariosRegistrados Usuario[]              @relation("RegistroUsuario")
   empleadosAsignados  DatosEmpleado[]
   inventarios         InventarioSucursal[]
   ventasRealizadas    Venta[]
@@ -120,14 +121,14 @@ model Producto {
   imagenUrl       String?
   detalleUnidad   String?
 
-  empresa       Empresa              @relation(fields: [empresaId], references: [idEmpresa])
-  categoria     Categoria            @relation(fields: [categoriaId], references: [idCategoria])
-  inventarios   InventarioSucursal[]
+  empresa     Empresa              @relation(fields: [empresaId], references: [idEmpresa])
+  categoria   Categoria            @relation(fields: [categoriaId], references: [idCategoria])
+  inventarios InventarioSucursal[]
   detallesVenta DetalleVenta[]
 }
 
 // ==========================================
-// BLOQUE 4: INTELIGENCIA ARTIFICIAL Y MARKETING
+// BLOQUE 4: MARKETING
 // ==========================================
 
 model SolucionesIA {
@@ -151,7 +152,7 @@ model Promocion {
 }
 
 // ==========================================
-// BLOQUE 5: TRANSACCIONES Y CARRITO
+// BLOQUE 5: TRANSACCIONES Y CLIENTES
 // ==========================================
 
 model Carrito {
@@ -162,27 +163,61 @@ model Carrito {
   usuario Usuario @relation(fields: [usuarioId], references: [idUsuario])
 }
 
-model Venta {
-  idVenta    Int      @id @default(autoincrement())
-  usuarioId  Int
-  empleadoId Int
-  sucursalId Int
-  fechaHora  DateTime @default(now())
-  totalVenta Decimal  @db.Decimal(10, 2)
+model Cliente {
+  idCliente         Int      @id @default(autoincrement())
+  personaId         Int      @unique // Vinculado a la Persona que contiene la Cédula
+  nombreRazonSocial String   @default("Consumidor Final")
+  usuarioId         Int?     @unique 
 
-  usuario  Usuario        @relation(fields: [usuarioId], references: [idUsuario])
-  empleado DatosEmpleado  @relation(fields: [empleadoId], references: [idEmpleado])
-  sucursal Sucursal       @relation(fields: [sucursalId], references: [idSucursal])
-  detalles DetalleVenta[]
+  persona           Persona  @relation(fields: [personaId], references: [idPersona])
+  usuario           Usuario? @relation(fields: [usuarioId], references: [idUsuario])
+  ventas            Venta[]
+}
+
+enum MetodoPago {
+  PAGO_MOVIL @map("Pago Móvil")
+  EFECTIVO   @map("Efectivo")
+  PUNTO      @map("Punto")
+  ZELLE      @map("Zelle")
+}
+
+model Venta {
+  idVenta       Int      @id @default(autoincrement())
+  numeroFactura String   @unique 
+  clienteId     Int?     
+  empleadoId    Int
+  sucursalId    Int
+  fechaHora     DateTime @default(now())
+  subtotal      Decimal  @db.Decimal(10, 2)
+  iva           Decimal  @db.Decimal(10, 2) 
+  totalVenta    Decimal  @db.Decimal(10, 2)
+
+  cliente       Cliente?      @relation(fields: [clienteId], references: [idCliente])
+  empleado      DatosEmpleado @relation(fields: [empleadoId], references: [idEmpleado])
+  sucursal      Sucursal      @relation(fields: [sucursalId], references: [idSucursal])
+  detalles      DetalleVenta[]
+  pagos         PagoVenta[]   
 }
 
 model DetalleVenta {
-  idDetalle      Int     @id @default(autoincrement())
-  ventaId        Int
-  productoId     Int
-  cantidad       Int
-  precioUnitario Decimal @db.Decimal(10, 2)
+  idDetalle       Int     @id @default(autoincrement())
+  ventaId         Int
+  productoId      Int
+  cantidad        Int
+  precioHistorico Decimal @db.Decimal(10, 2)
 
   venta    Venta    @relation(fields: [ventaId], references: [idVenta])
   producto Producto @relation(fields: [productoId], references: [idProducto])
+}
+
+model PagoVenta {
+  idPago        Int        @id @default(autoincrement())
+  ventaId       Int
+  metodoPago    MetodoPago
+  montoPagado   Decimal    @db.Decimal(10, 2) 
+  bancoReceptor String?    
+  referencia    String?    
+  montoRecibido Decimal?   @db.Decimal(10, 2) 
+
+  venta Venta @relation(fields: [ventaId], references: [idVenta])
 }

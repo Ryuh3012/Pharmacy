@@ -1,2 +1,19 @@
 @import "tailwindcss";
 @import "@heroui/styles";
+@media print {
+    body * {
+        visibility: hidden;
+    }
+
+    #factura-imprimible,
+    #factura-imprimible * {
+        visibility: visible;
+    }
+
+    #factura-imprimible {
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 80mm;
+    }
+}
